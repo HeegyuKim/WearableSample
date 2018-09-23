@@ -22,6 +22,7 @@ public class MainActivity extends WearableActivity
 {
     private static final String TAG = "MainActivity";
     private TextView mTextView;
+    private DataClient dataClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,19 @@ public class MainActivity extends WearableActivity
         // Enables Always-on
         setAmbientEnabled();
 
-        Wearable.getDataClient(this);
+        dataClient = Wearable.getDataClient(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        dataClient.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dataClient.removeListener(this);
     }
 
     /**
